@@ -3,7 +3,7 @@ const router = express.Router();
 const Rental = require('../models/Rental.model');
 const Book = require('../models/Book.model');
 const User = require('../models/User.model');
-const { isAuthenticated } = require('../middleware/jwt.middleware');
+const { isAuthenticated } = require('../middleware/firebase.middleware');
 const { isAdmin } = require('../middleware/isAdmin');
 const moment = require('moment');
 
@@ -15,11 +15,14 @@ router.get(
   async (req, res, next) => {
     try {
       // Find all rentals that have a return date greater than the current date
+      console.log('Before retrieving active rentals');
       const activeRentals = await Rental.find({
         returnDate: { $gt: new Date() }
       })
         .populate('book')
         .populate('user');
+
+      console.log('Active rentals:', activeRentals);
 
       res.json(activeRentals);
     } catch (error) {

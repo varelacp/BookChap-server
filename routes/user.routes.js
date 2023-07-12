@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const User = require('../models/User.model');
-const { isAuthenticated } = require('../middleware/jwt.middleware');
+const { isAuthenticated } = require('../middleware/firebase.middleware');
 const fileUploader = require('../config/cloudinary.config');
 const { isAdmin } = require('../middleware/isAdmin');
 

@@ -11,7 +11,8 @@ const express = require('express');
 
 const app = express();
 
-const { isAuthenticated } = require('./middleware/jwt.middleware');
+const isAuthenticated = require('./middleware/firebase.middleware');
+const isAdmin = require('./middleware/isAdmin');
 
 // ℹ️ This function is getting exported from the config folder. It runs most pieces of middleware
 require('./config')(app);
