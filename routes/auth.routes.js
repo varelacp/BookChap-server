@@ -7,11 +7,17 @@ const saltRounds = 10;
 
 // Signup - Create a new user
 router.post('/signup', async (req, res, next) => {
-  const { email, password, name, role } = req.body;
+  const { email, password, name, address, role } = req.body;
 
   try {
     // check if all parameters have been provided
-    if (email === '' || password === '' || name === '') {
+    if (
+      email === '' ||
+      password === '' ||
+      name === '' ||
+      address === '' ||
+      role === ''
+    ) {
       return res.status(400).json({ message: 'All fields are mandatory' });
     }
 
@@ -21,7 +27,7 @@ router.post('/signup', async (req, res, next) => {
       return res.status(400).json({ message: 'Provide a valid email address' });
     }
 
-    const passwordRegex = /^(?=.\d)(?=.[a-z])(?=.[A-Z])(?=.[a-zA-Z]).{6,}$/;
+    const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{6,}$/;
 
     if (!passwordRegex.test(password)) {
       return res.status(400).json({
@@ -47,7 +53,8 @@ router.post('/signup', async (req, res, next) => {
       email,
       name,
       password: hashedPassword,
-      role: role || 'user'
+      role,
+      address
     });
 
     res.json({ email: newUser.email, name: newUser.name, _id: newUser._id });
@@ -80,7 +87,12 @@ router.post('/login', async (req, res, next) => {
     if (isPasswordCorrect) {
       // create an object that will be set as the JWT payload
       // DON'T SEND THE PASSWORD!
-      const payload = { _id: user._id, email: user.email, name: user.name };
+      const payload = {
+        _id: user._id,
+        email: user.email,
+        name: user.name,
+        role: user.role
+      };
 
       const authToken = await auth.createCustomToken(user._id.toString(), {
         _id: user._id,
