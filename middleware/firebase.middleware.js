@@ -10,7 +10,8 @@ const isAuthenticated = async (req, res, next) => {
     try {
       const decodeValue = await auth.verifyIdToken(token);
       if (decodeValue) {
-        req.user = decodeValue;
+        // req.user = decodeValue;
+        req.payload = decodeValue;
         return next();
       }
     } catch (e) {

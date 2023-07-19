@@ -2,9 +2,11 @@ const router = require('express').Router();
 const Book = require('../models/Book.model');
 const mongoose = require('mongoose');
 const fileUploader = require('../config/cloudinary.config');
+const { isAuthenticated } = require('../middleware/firebase.middleware');
+const { isAdmin } = require('../middleware/isAdmin');
 
 // Create a new book
-router.post('/books', async (req, res, next) => {
+router.post('/books', isAuthenticated, async (req, res, next) => {
   const {
     title,
     author,
@@ -69,7 +71,7 @@ router.get('/books/:id', async (req, res, next) => {
 });
 
 // Update a specific book by Id
-router.put('/books/:id', async (req, res, next) => {
+router.put('/books/:id', isAuthenticated, isAdmin, async (req, res, next) => {
   const { id } = req.params;
   const { title, author, availability, description, category, imgUrl, isbn } =
     req.body;
@@ -108,7 +110,7 @@ router.put('/books/:id', async (req, res, next) => {
 });
 
 // Delete a specific book by Id
-router.delete('/books/:id', async (req, res, next) => {
+router.delete('/books/:id', isAuthenticated, async (req, res, next) => {
   const { id } = req.params;
 
   try {

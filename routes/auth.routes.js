@@ -94,11 +94,10 @@ router.post('/login', async (req, res, next) => {
         role: user.role
       };
 
-      const authToken = await auth.createCustomToken(user._id.toString(), {
-        _id: user._id,
-        email: user.email,
-        name: user.name
-      });
+      const authToken = await auth.createCustomToken(
+        user._id.toString(),
+        payload
+      );
 
       // send the JWT as response
       res.json({ authToken });
