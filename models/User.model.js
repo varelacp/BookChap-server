@@ -11,8 +11,7 @@ const userSchema = new Schema(
       type: String
     },
     address: {
-      type: String,
-      required: [true, 'Password is required.']
+      type: String
     },
     phoneNumber: {
       type: String
@@ -26,6 +25,7 @@ const userSchema = new Schema(
     },
     password: {
       type: String
+      // required: [true, 'Password is required.']
     },
     role: {
       type: String,

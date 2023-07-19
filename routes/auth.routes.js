@@ -9,6 +9,8 @@ const saltRounds = 10;
 router.post('/signup', async (req, res, next) => {
   const { email, password, name, address, role } = req.body;
 
+  console.log(req.body);
+
   try {
     // check if all parameters have been provided
     if (
