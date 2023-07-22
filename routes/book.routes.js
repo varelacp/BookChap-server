@@ -11,10 +11,13 @@ router.post('/books', isAuthenticated, async (req, res, next) => {
     title,
     author,
     description,
+    availability,
+    rentedBy,
     category,
     imgUrl,
     isbn,
-    rating = 0
+    rating = 0,
+    rentalPrice
   } = req.body;
 
   try {
@@ -27,7 +30,8 @@ router.post('/books', isAuthenticated, async (req, res, next) => {
       category,
       imgUrl,
       isbn,
-      rating: rating || 0 // Use the provided rating or set it to 0 if not available
+      rating: rating || 0,
+      rentalPrice // Use the provided rating or set it to 0 if not available
     });
 
     res.json(newBook);
