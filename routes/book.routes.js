@@ -14,8 +14,8 @@ router.post('/books', isAuthenticated, async (req, res, next) => {
     category,
     imgUrl,
     isbn,
-    availability,
     rentedBy,
+    availability,
     rating = 0,
     rentalPrice
   } = req.body;
@@ -36,7 +36,7 @@ router.post('/books', isAuthenticated, async (req, res, next) => {
 
     res.json(newBook);
   } catch (error) {
-    console.log('An error occured creating a new project', error);
+    console.log('An error occurred creating a new book', error);
     next(error);
   }
 });

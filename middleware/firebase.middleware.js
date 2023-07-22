@@ -15,10 +15,10 @@ const isAuthenticated = async (req, res, next) => {
       }
     } catch (e) {
       console.log(e);
-      return res.json({ message: 'Internal Error' });
+      return res.json({message: 'Internal Error'});
     }
   } else {
-    return res.json({ message: 'No token' });
+    return res.json({message: 'No token'});
   }
 };
 

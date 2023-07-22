@@ -22,7 +22,7 @@ router.get(
         .populate('book')
         .populate('user');
 
-      console.log('Rental find:', Rental.find);
+      console.log('Active rentals:', activeRentals);
 
       res.json(activeRentals);
     } catch (error) {
