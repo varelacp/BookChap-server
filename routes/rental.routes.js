@@ -69,14 +69,13 @@ router.post('/rentals', isAuthenticated, async (req, res, next) => {
     }
 
     // Parse the returnDate string using Moment.js
-    const parsedReturnDate = moment(returnDate, 'DD-MM-YYYY').toDate();
 
     // Create a new rental
     const newRental = await Rental.create({
       book: bookId,
       user: userId,
       rentalDate,
-      returnDate: parsedReturnDate
+      returnDate
     });
 
     //  book's availability and rentedBy fields updated
