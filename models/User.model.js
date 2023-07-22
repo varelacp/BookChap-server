@@ -1,4 +1,4 @@
-const { Schema, model } = require('mongoose');
+const {Schema, model} = require('mongoose');
 
 const userSchema = new Schema(
   {
@@ -10,13 +10,11 @@ const userSchema = new Schema(
       type: String
     },
     address: {
-      type: String,
-      required: [true, 'Address is required']
+      type: String
     },
     phoneNumber: {
-      type: String,
+      type: String
     },
-
     email: {
       type: String,
       required: [true, 'Email is required.'],
@@ -25,11 +23,11 @@ const userSchema = new Schema(
       trim: true
     },
     password: {
-      type: String,
-      required: [true, 'Password is required.']
+      type: String
     },
     role: {
       type: String,
+      required: [true, 'Role is required'],
       enum: ['user', 'admin'],
       default: 'user'
     }

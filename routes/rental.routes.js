@@ -3,62 +3,73 @@ const router = express.Router();
 const Rental = require('../models/Rental.model');
 const Book = require('../models/Book.model');
 const User = require('../models/User.model');
-const { isAuthenticated } = require('../middleware/jwt.middleware');
-const { isAdmin } = require('../middleware/isAdmin')
+const {isAuthenticated} = require('../middleware/firebase.middleware');
 const moment = require('moment');
-
-
+const {isAdmin} = require('../middleware/isAdmin');
 
 // Get all active rentals
-router.get('/rentals/active', isAuthenticated, isAdmin, async (req, res, next) => {
-  try {
-    // Find all rentals that have a return date greater than the current date
-    const activeRentals = await Rental.find({ returnDate: { $gt: new Date() } })
-      .populate('book')
-      .populate('user');
+router.get(
+  '/rentals/active',
+  isAuthenticated,
+  isAdmin,
+  async (req, res, next) => {
+    try {
+      // Find all rentals that have a return date greater than the current date
+      console.log('Before retrieving active rentals');
+      const activeRentals = await Rental.find({
+        returnDate: {$gt: new Date()}
+      })
+        .populate('book')
+        .populate('user');
 
-    res.json(activeRentals);
-  } catch (error) {
-    console.log('An error occurred while getting active rentals:', error);
-    next(error);
+      console.log('Rental find:', Rental.find);
+
+      res.json(activeRentals);
+    } catch (error) {
+      console.log('An error occurred while getting active rentals:', error);
+      next(error);
+    }
   }
-});
+);
 
 // Get all rentals for a user
- router.get('/users/:userId/rentals', isAuthenticated, async (req, res, next) => {
-  const { userId } = req.params;
+router.get(
+  '/users/:userId/rentals',
+  isAuthenticated,
+  async (req, res, next) => {
+    const {userId} = req.params;
 
-  try {
-    // Find all rentals associated with the specified user
-    const userRentals = await Rental.find({ user: userId }).populate('book');
+    try {
+      // Find all rentals associated with the specified user
+      const userRentals = await Rental.find({user: userId}).populate('book');
 
-    res.json(userRentals);
-  } catch (error) {
-    console.log('An error occurred while getting user rentals:', error);
-    next(error);
+      res.json(userRentals);
+    } catch (error) {
+      console.log('An error occurred while getting user rentals:', error);
+      next(error);
+    }
   }
-}); 
-
+);
 
 // Rent a book
 router.post('/rentals', isAuthenticated, async (req, res, next) => {
-  const { bookId, userId, rentalDate, returnDate } = req.body;
+  const {bookId, userId, rentalDate, returnDate} = req.body;
 
   try {
     // Check if the book exists
     const book = await Book.findById(bookId);
     if (!book) {
-      return res.status(404).json({ message: 'Book not found' });
+      return res.status(404).json({message: 'Book not found'});
     }
 
     // Check if the user exists
     const user = await User.findById(userId);
     if (!user) {
-      return res.status(404).json({ message: 'User not found' });
+      return res.status(404).json({message: 'User not found'});
     }
 
-     // Parse the returnDate string using Moment.js
-     const parsedReturnDate = moment(returnDate, 'DD-MM-YYYY').toDate();
+    // Parse the returnDate string using Moment.js
+    const parsedReturnDate = moment(returnDate, 'DD-MM-YYYY').toDate();
 
     // Create a new rental
     const newRental = await Rental.create({
@@ -82,19 +93,19 @@ router.post('/rentals', isAuthenticated, async (req, res, next) => {
 
 // Return a book
 router.put('/rentals/:id/return', isAuthenticated, async (req, res, next) => {
-  const { id } = req.params;
+  const {id} = req.params;
 
   try {
     // Find the rental
     const rental = await Rental.findById(id);
     if (!rental) {
-      return res.status(404).json({ message: 'Rental not found' });
+      return res.status(404).json({message: 'Rental not found'});
     }
 
     // Find the book
     const book = await Book.findById(rental.book);
     if (!book) {
-      return res.status(404).json({ message: 'Book not found' });
+      return res.status(404).json({message: 'Book not found'});
     }
 
     // Update the rental's returnDate

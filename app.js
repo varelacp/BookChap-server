@@ -11,7 +11,8 @@ const express = require('express');
 
 const app = express();
 
- const { isAuthenticated } = require('./middleware/jwt.middleware'); 
+const isAuthenticated = require('./middleware/firebase.middleware'); //  <-- Add this one
+const isAdmin = require('./middleware/isAdmin');
 
 // ℹ️ This function is getting exported from the config folder. It runs most pieces of middleware
 require('./config')(app);
@@ -21,16 +22,19 @@ const indexRoutes = require('./routes/index.routes');
 app.use('/api', indexRoutes);
 
 const bookRoutes = require('./routes/book.routes');
-app.use('/api', bookRoutes)
+app.use('/api', bookRoutes);
 
-const rentalRoutes = require('./routes/rental.routes')
-app.use('/api', rentalRoutes)
+const rentalRoutes = require('./routes/rental.routes');
+app.use('/api', rentalRoutes);
 
 const authRoutes = require('./routes/auth.routes');
 app.use('/auth', authRoutes);
 
+const cartRoutes = require('./routes/cart.routes');
+app.use('/api', cartRoutes);
+
 const userRoutes = require('./routes/user.routes');
-app.use('/api', userRoutes)
+app.use('/api', userRoutes);
 
 // ❗ To handle errors. Routes that don't exist or errors that you handle in specific routes
 require('./error-handling')(app);
