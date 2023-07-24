@@ -65,11 +65,11 @@ router.get('/admin-dashboard', isAuthenticated, isAdmin, async (req, res) => {
 router.put('/user-dashboard-edit', isAuthenticated, async (req, res) => {
   try {
     const userId = req.payload._id;
-    const {name, address, phoneNumber} = req.body;
+    const {name, address, phoneNumber, profileImage} = req.body;
 
     const updatedUser = await User.findByIdAndUpdate(
       userId,
-      {name, address, phoneNumber},
+      {name, address, phoneNumber, profileImage},
       {new: true}
     );
 
@@ -80,7 +80,8 @@ router.put('/user-dashboard-edit', isAuthenticated, async (req, res) => {
     const updatedUserData = {
       name: updatedUser.name,
       address: updatedUser.address,
-      phoneNumber: updatedUser.phoneNumber
+      phoneNumber: updatedUser.phoneNumber,
+      profileImage: updatedUser.profileImage
     };
 
     res.json(updatedUserData);
@@ -98,11 +99,11 @@ router.put(
   async (req, res) => {
     try {
       const userId = req.payload._id;
-      const {name, address, phoneNumber} = req.body;
+      const {name, address, phoneNumber, profileImage} = req.body;
 
       const updatedAdmin = await User.findByIdAndUpdate(
         userId,
-        {name, address, phoneNumber},
+        {name, address, phoneNumber, profileImage},
         {new: true}
       );
 
@@ -113,7 +114,8 @@ router.put(
       const updatedAdminData = {
         name: updatedAdmin.name,
         address: updatedAdmin.address,
-        phoneNumber: updatedAdmin.phoneNumber
+        phoneNumber: updatedAdmin.phoneNumber,
+        profileImage: updatedAdmin.profileImage
       };
 
       res.json(updatedAdminData);
