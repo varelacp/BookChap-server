@@ -162,6 +162,7 @@ router.get('/books/search/category/:category', async (req, res, next) => {
 
   try {
     const books = await Book.find({category});
+    console.log(category);
 
     res.json(books);
   } catch (error) {
