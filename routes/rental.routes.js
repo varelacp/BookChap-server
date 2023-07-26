@@ -41,7 +41,10 @@ router.get(
 
     try {
       // Find all rentals associated with the specified user
-      const userRentals = await Rental.find({user: userId}).populate('book');
+      const userRentals = await Rental.find({
+        user: userId,
+        returnDate: {$gt: new Date()}
+      }).populate('book');
 
       res.json(userRentals);
     } catch (error) {

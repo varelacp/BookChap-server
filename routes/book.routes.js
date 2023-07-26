@@ -77,8 +77,16 @@ router.get('/books/:id', async (req, res, next) => {
 // Update a specific book by Id
 router.put('/books/:id', isAuthenticated, isAdmin, async (req, res, next) => {
   const {id} = req.params;
-  const {title, author, availability, description, category, imgUrl, isbn} =
-    req.body;
+  const {
+    title,
+    author,
+    availability,
+    description,
+    category,
+    imgUrl,
+    isbn,
+    rentalPrice
+  } = req.body;
 
   try {
     // Check if the provided id is a valid mongoose id
@@ -95,7 +103,8 @@ router.put('/books/:id', isAuthenticated, isAdmin, async (req, res, next) => {
         availability,
         category,
         imgUrl,
-        isbn
+        isbn,
+        rentalPrice
       },
       {new: true}
     );
